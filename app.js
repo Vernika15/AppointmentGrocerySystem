@@ -46,6 +46,9 @@ const doctors = [
   },
 ];
 
+// =====================
+// Slots Data
+// =====================
 const allSlots = [
   "09:00 AM",
   "10:00 AM",
@@ -94,6 +97,7 @@ const closeModalBtn = document.getElementById("closeModal");
 const modalDoctorName = document.getElementById("modalDoctorName");
 
 let selectedDoctorId = null;
+let editingIndex = null; // null = not editing, number = appointment index
 
 // =====================
 // Render available slots
@@ -127,7 +131,7 @@ function renderDoctorList() {
 }
 
 // =====================
-// Arrow Click Handler
+// Modal Handling (Book or Edit)
 // =====================
 document.addEventListener("click", (e) => {
   if (e.target.classList.contains("arrow-btn")) {
@@ -135,15 +139,16 @@ document.addEventListener("click", (e) => {
     const doctor = doctors.find((d) => d.id === docId);
     if (!doctor) return;
 
+    editingIndex = null;
     selectedDoctorId = doctor.id;
     modalDoctorName.textContent = `${doctor.firstName} ${doctor.lastName}`;
 
     // Reset form fields
-    document.getElementById("appointmentDate").value = "";
-    document.getElementById("timeSlotSelect").innerHTML =
-      '<option value="">-- Select Slot --</option>';
-    document.getElementById("patientName").value = "";
-    document.getElementById("purpose").value = "";
+    patientNameInput.value = "";
+    purposeInput.value = "";
+    dateInput.value = "";
+    slotSelect.innerHTML = '<option value="">-- Select Slot --</option>';
+    bookBtn.textContent = "Book Appointment";
 
     // Show modal
     modal.style.display = "block";
@@ -153,12 +158,16 @@ document.addEventListener("click", (e) => {
 // Close modal
 closeModalBtn.addEventListener("click", () => {
   modal.style.display = "none";
+  editingIndex = null;
+  bookBtn.textContent = "Book Appointment";
 });
 
 // Close modal when clicking outside of it
 window.addEventListener("click", (e) => {
   if (e.target === modal) {
     modal.style.display = "none";
+    editingIndex = null;
+    bookBtn.textContent = "Book Appointment";
   }
 });
 
@@ -180,7 +189,7 @@ dateInput.addEventListener("change", () => {
 });
 
 // =====================
-// Book Appointment
+// Book or Update Appointment
 // =====================
 bookBtn.addEventListener("click", () => {
   const date = dateInput.value;
@@ -194,6 +203,15 @@ bookBtn.addEventListener("click", () => {
     return;
   }
 
+  let appointments = getAppointments();
+
+  // If editing, remove old record
+  if (editingIndex !== null) {
+    appointments.splice(editingIndex, 1);
+    editingIndex = null;
+  }
+
+  // Check for slot conflicts
   const available = getAvailableSlots(selectedDoctorId, date);
   if (!available.includes(slot)) {
     alert("Slot already booked. Please choose another.");
@@ -209,12 +227,12 @@ bookBtn.addEventListener("click", () => {
     purpose,
   };
 
-  const appointments = getAppointments();
   appointments.push(newAppointment);
   localStorage.setItem("appointments", JSON.stringify(appointments));
 
-  alert("Appointment booked successfully!");
+  alert("Appointment saved successfully!");
   modal.style.display = "none";
+  bookBtn.textContent = "Book Appointment";
   renderAppointments();
 });
 
@@ -233,7 +251,7 @@ function renderAppointments() {
   const appointments = getAppointments();
   tbody.innerHTML = "";
 
-  appointments.forEach((app) => {
+  appointments.forEach((app, index) => {
     const row = document.createElement("tr");
     row.innerHTML = `
       <td>${app.patientName}</td>
@@ -241,8 +259,71 @@ function renderAppointments() {
       <td>${app.date}</td>
       <td>${app.slot}</td>
       <td>${app.purpose}</td>
-      <td>Edit | Delete</td>
+      <td>
+        <span class="edit-btn" data-index="${index}" style="color:blue;cursor:pointer">Edit</span> |
+        <span class="delete-btn" data-index="${index}" style="color:red;cursor:pointer">Delete</span>
+      </td>
     `;
     tbody.appendChild(row);
   });
 }
+
+// =====================
+// Handle Delete Click
+// =====================
+document.addEventListener("click", (e) => {
+  if (e.target.classList.contains("delete-btn")) {
+    const index = e.target.getAttribute("data-index");
+    const confirmed = confirm(
+      "Are you sure, you want to cancel this appointment?"
+    );
+    if (confirmed) {
+      const appointments = getAppointments();
+      appointments.splice(index, 1);
+      localStorage.setItem("appointments", JSON.stringify(appointments));
+      renderAppointments();
+    }
+  }
+});
+
+// =====================
+// Handle Edit Click
+// =====================
+document.addEventListener("click", (e) => {
+  if (e.target.classList.contains("edit-btn")) {
+    const index = e.target.getAttribute("data-index");
+    const appointments = getAppointments();
+    const appointment = appointments[index];
+    const doctor = doctors.find((d) => d.id === appointment.doctorId);
+
+    if (!doctor) return;
+
+    // Set current edit state
+    editingIndex = index;
+    selectedDoctorId = doctor.id;
+
+    // Pre-fill form
+    modalDoctorName.textContent = `${doctor.firstName} ${doctor.lastName}`;
+    patientNameInput.value = appointment.patientName;
+    purposeInput.value = appointment.purpose;
+    dateInput.value = appointment.date;
+
+    // Populate available slots for this date+doctor
+    const slots = getAvailableSlots(selectedDoctorId, appointment.date);
+    slotSelect.innerHTML = '<option value="">-- Select Slot --</option>';
+    slots.push(appointment.slot); // Ensure existing is included even if booked
+    const uniqueSlots = [...new Set(slots)]; // avoid duplicates
+
+    uniqueSlots.forEach((slot) => {
+      const opt = document.createElement("option");
+      opt.value = slot;
+      opt.textContent = slot;
+      slotSelect.appendChild(opt);
+    });
+
+    slotSelect.value = appointment.slot;
+
+    modal.style.display = "block";
+    bookBtn.textContent = "Update Appointment";
+  }
+});
