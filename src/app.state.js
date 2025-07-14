@@ -1,6 +1,20 @@
 export const state = {
   appointments: [], // all booked appointments
   form: {}, // currently editing form (if any)
-  doctors: ["Dr. Amit", "Dr. Rhea", "Dr. Salma"], // static list
-  availableSlots: ["10:00", "11:00", "12:00", "1:00", "2:00"], // static slots
+  doctors: [
+    "Dr. A.P.J. Abdul",
+    "Dr. Maya Rao",
+    "Dr. Vikram Patel",
+    "Dr. In Ho",
+    "Dr. Deepak Verma",
+    "Dr. Prem Chand",
+  ], // static list
+  availableSlots: [
+    "09:00 AM",
+    "10:00 AM",
+    "11:00 AM",
+    "02:00 PM",
+    "03:00 PM",
+    "04:00 PM",
+  ], // static slots
 };
