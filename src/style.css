@@ -61,18 +61,17 @@ body {
   display: flex;
   flex-direction: column;
   font-weight: 500;
-  font-size: 0.95rem;
+  font-size: 1rem;
   color: #333;
-  /* margin-bottom: 1rem; */
 }
 
 /* Inputs, Selects, Textareas */
 .appointment-form input,
 .appointment-form select,
 .appointment-form textarea {
-  margin: 0;
+  margin-top: 0.3rem;
   padding: 0.5rem 0.8rem;
-  font-size: 1rem;
+  font-size: 0.95rem;
   width: 100%;
   border: 1px solid #ccc;
   border-radius: 6px;
