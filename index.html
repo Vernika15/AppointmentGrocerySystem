@@ -2,52 +2,50 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <title>Appointment Dashboard</title>
+    <title>Appointment Booking System</title>
     <link rel="stylesheet" href="styles.css" />
   </head>
   <body>
-    <div class="dashboard">
-      <!-- Sidebar -->
-      <div class="sidebar">
-        <h2>Dashboard</h2>
-        <button class="nav-btn" data-view="manage">Manage Appointment</button>
-        <button class="nav-btn" data-view="list">Appointment List</button>
+    <div class="container">
+      <!-- Top Card -->
+      <div class="card">
+        <h2>Total Appointments: <span id="totalCount">0</span></h2>
       </div>
 
-      <!-- Main Content -->
-      <div class="main-content">
-        <!-- Manage Appointment View -->
-        <div id="manageView" class="view-section">
-          <h2>Manage Appointment</h2>
-          <!-- Doctor Table -->
-          <table class="doctor-table" style="margin-top: 50px">
-            <thead>
-              <tr>
-                <th></th>
-                <th>First Name</th>
-                <th>Last Name</th>
-                <th>Phone</th>
-                <th></th>
-              </tr>
-            </thead>
-            <tbody id="doctorList">
-              <!-- Doctor rows will be injected by JS -->
-            </tbody>
-          </table>
+      <!-- Main Flex Content -->
+      <div class="main-flex">
+        <!-- Appointment Form -->
+        <div class="form-section">
+          <h3>📋 Appointment Form</h3>
+          <label>Name:</label>
+          <input type="text" id="patientName" />
+
+          <label>Date:</label>
+          <input type="date" id="appointmentDate" />
+
+          <label>Doctor:</label>
+          <select id="doctorSelect">
+            <option value="">-- Select Doctor --</option>
+          </select>
+
+          <label>Slot:</label>
+          <select id="timeSlotSelect">
+            <option value="">-- Select Slot --</option>
+          </select>
+
+          <label>Purpose:</label>
+          <textarea id="purpose" rows="2"></textarea>
+
+          <button id="bookBtn">Book Appointment</button>
         </div>
 
-        <!-- Appointment List View -->
-        <div id="listView" class="view-section">
-          <h2>Appointment List</h2>
-          <!-- Appointment Table -->
-          <table
-            id="appointmentTable"
-            class="doctor-table"
-            style="margin-top: 50px"
-          >
+        <!-- Appointment Table -->
+        <div class="table-section">
+          <h3>📅 Appointments Table</h3>
+          <table id="appointmentTable">
             <thead>
               <tr>
-                <th>Patient</th>
+                <th>Name</th>
                 <th>Doctor</th>
                 <th>Date</th>
                 <th>Slot</th>
@@ -58,31 +56,6 @@
             <tbody></tbody>
           </table>
         </div>
-      </div>
-    </div>
-
-    <!-- Appointment Modal -->
-    <div id="appointmentModal" class="modal">
-      <div class="modal-content">
-        <span class="close-btn" id="closeModal">&times;</span>
-        <h3>Book Appointment</h3>
-        <p><strong>Doctor:</strong> <span id="modalDoctorName"></span></p>
-
-        <label for="appointmentDate">Select Date:</label>
-        <input type="date" id="appointmentDate" />
-
-        <label for="timeSlotSelect">Available Time Slots:</label>
-        <select id="timeSlotSelect">
-          <option value="">-- Select Slot --</option>
-        </select>
-
-        <label for="patientName">Patient Name:</label>
-        <input type="text" id="patientName" />
-
-        <label for="purpose">Purpose / Description:</label>
-        <textarea id="purpose"></textarea>
-
-        <button id="bookBtn">Book Appointment</button>
       </div>
     </div>
 
