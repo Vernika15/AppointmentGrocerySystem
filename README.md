@@ -8,13 +8,12 @@ Live Demo: [appointment-booking-system](https://appointment-booking-system-git-c
 
 ## 🚀 Features
 
-- 🧑‍⚕️ View list of doctors with profile picture and contact details
-- 📅 Select a doctor and book an appointment using a modal form
+- 📅 Book an appointment by filling the appointment form including doctor's name, their availability slots, selecting dates
 - ⏰ Dynamic slot availability (no double booking)
 - 💾 Data persists using `localStorage`
-- ✏️ Edit existing appointments (except doctor)
+- ✏️ Edit existing appointments
 - ❌ Delete with confirmation
-- 🧭 Dashboard UI with sidebar navigation
+- 🧭 One page UI with appointment form on one side and appointments table on the other side
 - 📦 Fully deployed using **Vercel**
 
 ---
