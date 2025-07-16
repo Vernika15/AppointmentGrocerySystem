@@ -188,6 +188,8 @@ export function Form(isModal = false) {
       state.appointments[index] = { ...data, id: state.form.id };
     } else {
       state.appointments.push({ ...data, id: generateId() });
+
+      alert("Appointment booked successfully!");
     }
 
     state.form = {};
