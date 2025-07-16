@@ -69,7 +69,7 @@ The app uses a **modular, state-driven architecture** inspired by React — buil
     │   ├── Counters.js    # Total appointment card at top
     └── utils/
         └── id.js          # Unique ID generator for appointments
-└── README.md           # You're here!
+└── README.md              # You're here!
 ```
 
 ## 🙋‍♀️ Author
