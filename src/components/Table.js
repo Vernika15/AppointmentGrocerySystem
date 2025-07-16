@@ -2,9 +2,11 @@ import { state } from "../app.state.js";
 import { renderApp } from "./App.js";
 import { saveToStorage } from "../app.storage.js";
 
+// Renders the appointments table with Edit and Delete actions
 export function Table() {
   const section = document.createElement("section");
 
+  // Create the table layout and inject appointment rows dynamically
   section.innerHTML = `
     <h3>📅 Appointments Table</h3>
     <table class="appointment-table">
@@ -40,17 +42,22 @@ export function Table() {
     </table>
   `;
 
-  // Handle Edit
+  // Handle Edit button click
   section.querySelectorAll(".edit-btn").forEach((btn) => {
     btn.addEventListener("click", () => {
       const id = btn.dataset.id;
+      // Find the appointment to edit
       const found = state.appointments.find((app) => app.id === id);
-      state.form = { ...found }; // populate form
+
+      // Store it in state.form to pre-fill the modal
+      state.form = { ...found };
+
+      // Trigger modal rendering
       renderApp();
     });
   });
 
-  // Handle Delete
+  // Handle Delete button click
   section.querySelectorAll(".delete-btn").forEach((btn) => {
     btn.addEventListener("click", () => {
       const id = btn.dataset.id;
@@ -58,11 +65,13 @@ export function Table() {
         "Are you sure you want to delete this appointment?"
       );
       if (confirmDelete) {
-        // Remove from state
+        // Remove the appointment from global state
         state.appointments = state.appointments.filter((app) => app.id !== id);
 
-        // Save and re-render
+        // Persist the updated state
         saveToStorage();
+
+        // Re-render the UI (which also updates available slots)
         renderApp();
       }
     });

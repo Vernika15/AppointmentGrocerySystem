@@ -4,25 +4,31 @@ import { generateId } from "../utils/id.js";
 import { saveToStorage } from "../app.storage.js";
 import { renderApp } from "./App.js";
 
+// Renders the appointment form
+// `isModal = false` means this is the left panel form
+// `isModal = true` means this is the modal form for editing
 export function Form(isModal = false) {
   const form = document.createElement("form");
   form.className = "appointment-form";
 
+  // Determine if we're editing (only true for modal with form.id present)
   const isEditing = !!(isModal && state.form.id);
 
+  // Load existing form values (for modal) or blank defaults (for new booking)
   let formData = isEditing
     ? { ...state.form }
     : { name: "", date: "", doctor: "", slot: "", purpose: "" };
 
   let { name, date, doctor, slot, purpose } = formData;
 
+  // Get available slots for selected doctor/date
   const availableSlots =
     doctor && date
       ? getAvailableSlots(doctor, date, isEditing ? state.form.id : null)
       : [];
 
+  // Add close icon if it's a modal form
   const heading = document.createElement("h3");
-
   if (isModal) {
     const closeIcon = document.createElement("span");
     closeIcon.innerHTML = "✖";
@@ -41,11 +47,13 @@ export function Form(isModal = false) {
     form.appendChild(closeIcon);
   }
 
+  // Form title based on mode
   heading.textContent = isEditing
     ? "✏️ Edit Appointment"
     : "📝 Appointment Form";
   form.appendChild(heading);
 
+  // Utility function to group label + field
   function createField(labelText, inputEl) {
     const label = document.createElement("label");
     label.textContent = labelText;
@@ -60,7 +68,7 @@ export function Form(isModal = false) {
   nameInput.value = name;
   form.appendChild(createField("Name:", nameInput));
 
-  // Date field
+  // Date picker
   const dateInput = document.createElement("input");
   dateInput.name = "date";
   dateInput.type = "date";
@@ -110,6 +118,7 @@ export function Form(isModal = false) {
 
   form.appendChild(createField("Slot:", slotSelect));
 
+  // Utility: dynamically update slot list (for left-side form)
   function updateSlotDropdown(newDoctor, newDate) {
     const slots =
       newDoctor && newDate ? getAvailableSlots(newDoctor, newDate, null) : [];
@@ -142,7 +151,7 @@ export function Form(isModal = false) {
   purposeArea.textContent = purpose;
   form.appendChild(createField("Purpose:", purposeArea));
 
-  // Submit button
+  // ✅ Submit button (label depends on mode)
   const submitBtn = document.createElement("button");
   submitBtn.type = "submit";
   submitBtn.textContent = isEditing ? "Update Appointment" : "Book Appointment";
@@ -150,10 +159,11 @@ export function Form(isModal = false) {
   const actionsDiv = document.createElement("div");
   actionsDiv.className = "form-actions";
   actionsDiv.appendChild(submitBtn);
-
   form.appendChild(actionsDiv);
 
-  // Only modal form updates state.form
+  // EVENT HANDLING SECTION
+
+  // Modal form re-renders on doctor/date change (to refresh slots)
   if (isModal) {
     doctorSelect.addEventListener("change", (e) => {
       state.form.doctor = e.target.value;
@@ -166,6 +176,7 @@ export function Form(isModal = false) {
     });
   }
 
+  // Left form updates slot dropdown without re-rendering
   if (!isModal) {
     doctorSelect.addEventListener("change", (e) => {
       doctor = e.target.value;
@@ -178,7 +189,7 @@ export function Form(isModal = false) {
     });
   }
 
-  // Submit handler
+  // Submit: Create or update appointment
   form.addEventListener("submit", (e) => {
     e.preventDefault();
     const data = Object.fromEntries(new FormData(form).entries());
@@ -189,12 +200,13 @@ export function Form(isModal = false) {
     } else {
       state.appointments.push({ ...data, id: generateId() });
 
+      // Alert on new booking only
       alert("Appointment booked successfully!");
     }
 
-    state.form = {};
-    saveToStorage();
-    renderApp();
+    state.form = {}; // Clear form state
+    saveToStorage(); // Save to localStorage
+    renderApp(); // Refresh UI
   });
 
   return form;

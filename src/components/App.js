@@ -3,43 +3,46 @@ import { Counter } from "./Counters.js";
 import { Form } from "./Form.js";
 import { Table } from "./Table.js";
 
+// Root render function that constructs the entire UI
 export function renderApp() {
   const root = document.getElementById("app");
-  root.innerHTML = ""; // Clear existing DOM
+  root.innerHTML = ""; // Clear previous DOM content before re-rendering
 
-  // Card on top
+  // Top summary counter card (shows total appointments)
   const counterCard = Counter();
 
-  // Horizontal layout
+  // Create main horizontal layout container
   const layout = document.createElement("div");
   layout.className = "layout";
 
-  // Left side: Form + Counter
+  // Left section: contains the appointment booking form
   const left = document.createElement("div");
   left.className = "left";
-  left.appendChild(Form());
+  left.appendChild(Form()); // Always shows blank form for new booking
 
-  // Right side: Table
+  // Right section: contains the list of existing appointments
   const right = document.createElement("div");
   right.className = "right";
-  right.appendChild(Table());
+  right.appendChild(Table()); // Renders appointment table with Edit/Delete
 
+  // Append left and right panels to layout container
   layout.appendChild(left);
   layout.appendChild(right);
 
-  root.appendChild(counterCard); // Insert card above layout
-  root.appendChild(layout);
+  // Add counter and layout to the DOM
+  root.appendChild(counterCard); // Total Appointments card at top
+  root.appendChild(layout); // Horizontal split: form + table
 
-  // Modal form (conditionally rendered)
+  // Conditionally render modal if editing an appointment
   if (state.form.id) {
     const modal = document.createElement("div");
-    modal.className = "modal-overlay";
+    modal.className = "modal-overlay"; // Transparent dark backdrop
 
     const modalContent = document.createElement("div");
     modalContent.className = "modal-content";
-    modalContent.appendChild(Form(true)); // pass true for edit mode
+    modalContent.appendChild(Form(true)); // Pass `true` to render pre-filled modal form
 
     modal.appendChild(modalContent);
-    root.appendChild(modal);
+    root.appendChild(modal); // Modal appears above layout
   }
 }
