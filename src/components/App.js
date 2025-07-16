@@ -1,3 +1,4 @@
+import { state } from "../app.state.js";
 import { Counter } from "./Counters.js";
 import { Form } from "./Form.js";
 import { Table } from "./Table.js";
@@ -28,4 +29,17 @@ export function renderApp() {
 
   root.appendChild(counterCard); // Insert card above layout
   root.appendChild(layout);
+
+  // Modal form (conditionally rendered)
+  if (state.form.id) {
+    const modal = document.createElement("div");
+    modal.className = "modal-overlay";
+
+    const modalContent = document.createElement("div");
+    modalContent.className = "modal-content";
+    modalContent.appendChild(Form(true)); // pass true for edit mode
+
+    modal.appendChild(modalContent);
+    root.appendChild(modal);
+  }
 }
