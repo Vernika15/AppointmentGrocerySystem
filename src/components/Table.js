@@ -58,7 +58,10 @@ export function Table() {
         "Are you sure you want to delete this appointment?"
       );
       if (confirmDelete) {
+        // Remove from state
         state.appointments = state.appointments.filter((app) => app.id !== id);
+
+        // Save and re-render
         saveToStorage();
         renderApp();
       }
