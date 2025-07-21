@@ -1,6 +1,6 @@
 # 🗓️ Appointment Booking System
 
-This is a single-page **Appointment Booking System** built using **HTML, CSS, and Vanilla JavaScript** (modularized using Vite). It allows users to select doctors, choose available time slots, book appointments, and manage them with full **CRUD (Create, Read, Update, Delete)** functionality — all backed by `localStorage`.
+This is a single-page **Appointment Booking System** built using **HTML, CSS, and Vanilla TypeScript** (modularized using Vite). It allows users to select doctors, choose available time slots, book appointments, and manage them with full **CRUD (Create, Read, Update, Delete)** functionality — all backed by `localStorage`.
 
 Live Demo: [appointment-booking-system](https://appointment-booking-system-git-vi-0c0ec0-vernika-gargs-projects.vercel.app)
 
@@ -51,24 +51,24 @@ Then visit: [http://localhost:5173](http://localhost:5173)
 
 ## 📁 Project Structure
 
-The app uses a **modular, state-driven architecture** inspired by React — built purely in Vanilla JavaScript with Vite:
+The app uses a **modular, state-driven architecture** inspired by React — built purely in Vanilla TypeScript with Vite:
 
 ```
 📦 project-root/
 ├── index.html             # HTML shell
 └── src/
-    ├── main.js            # App entry point
-    ├── app.state.js       # Global reactive state
-    ├── app.logic.js       # Business logic (e.g., slot filtering)
-    ├── app.storage.js     # localStorage interaction
+    ├── main.ts            # App entry point
+    ├── app.state.ts       # Global reactive state
+    ├── app.logic.ts       # Business logic (e.g., slot filtering)
+    ├── app.storage.ts     # localStorage interaction
     ├── style.css          # Global styles
     ├── components/
-    │   ├── App.js         # Root layout (form + table + modal)
-    │   ├── Form.js        # New + edit form with modal support
-    │   ├── Table.js       # Appointment listing with Edit/Delete
-    │   ├── Counters.js    # Total appointment card at top
+    │   ├── App.ts         # Root layout (form + table + modal)
+    │   ├── Form.ts        # New + edit form with modal support
+    │   ├── Table.ts       # Appointment listing with Edit/Delete
+    │   ├── Counters.ts    # Total appointment card at top
     └── utils/
-        └── id.js          # Unique ID generator for appointments
+        └── id.ts          # Unique ID generator for appointments
 └── README.md              # You're here!
 ```
 
