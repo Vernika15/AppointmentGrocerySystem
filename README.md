@@ -2,7 +2,7 @@
 
 This is a single-page **Appointment Booking System** built using **HTML, CSS, and Vanilla TypeScript** (modularized using Vite). It allows users to select doctors, choose available time slots, book appointments, and manage them with full **CRUD (Create, Read, Update, Delete)** functionality — all backed by `localStorage`.
 
-Live Demo: [appointment-booking-system](https://appointment-booking-system-git-vi-0c0ec0-vernika-gargs-projects.vercel.app)
+Live Demo: [appointment-booking-system](https://appointment-booking-system-git-vi-f3f108-vernika-gargs-projects.vercel.app)
 
 ---
 
