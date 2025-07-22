@@ -62,6 +62,7 @@ The app uses a **modular, state-driven architecture** inspired by React — buil
     ├── app.logic.ts       # Business logic (e.g., slot filtering)
     ├── app.storage.ts     # localStorage interaction
     ├── style.css          # Global styles
+    ├── types.ts           # Global types
     ├── components/
     │   ├── App.ts         # Root layout (form + table + modal)
     │   ├── Form.ts        # New + edit form with modal support
@@ -69,7 +70,8 @@ The app uses a **modular, state-driven architecture** inspired by React — buil
     │   ├── Counters.ts    # Total appointment card at top
     └── utils/
         └── id.ts          # Unique ID generator for appointments
-└── README.md              # You're here!
+├── README.md              # You're here!
+└── tsconfig.json          # typescript configuration
 ```
 
 ## 🙋‍♀️ Author
